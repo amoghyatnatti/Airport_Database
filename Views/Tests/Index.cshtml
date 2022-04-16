@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Airport_Database.Models.Test>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NoHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationNoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SsnNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TestNoNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationNoNavigation.RegistrationNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SsnNavigation.Ssn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TestNoNavigation.TestNo)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
