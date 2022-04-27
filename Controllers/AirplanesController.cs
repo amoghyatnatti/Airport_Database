@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Airport_Database.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Airport_Database.Controllers
 {
@@ -23,6 +24,25 @@ namespace Airport_Database.Controllers
         {
             var airportDatabaseContext = _context.Airplane.Include(a => a.ModelNoNavigation);
             return View(await airportDatabaseContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> AirplaneData()
+        {
+            var airplane = _context.Airplane;
+            var model = _context.Model;
+            var airplanedata = await airplane.Join(model, a => a.ModelNo, m => m.ModelNo, (a, m) => new AirplaneData(a.RegistrationNo, a.ModelNo, m.Capacity, m.Weight)).ToListAsync();
+            return View(airplanedata);
+        }
+
+        public async Task<IActionResult> ViewTests(long? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var tests = _context.Test.Where(a => a.RegistrationNo == id);
+            var testinfo = _context.TestInfo.Join(tests, t => t.TestNo, t => t.TestNo, (ti, t) => new { t.TestNo, t.RegistrationNo, t.Ssn, t.Score, ti.MaxScore, ti.Name, t.Date});
+            return View(await testinfo.Join(_context.Employee, t => t.Ssn, e => e.Ssn, (t, e) => new AirplaneTest(t.TestNo, t.RegistrationNo, t.Score, t.MaxScore, t.Date, t.Name, e.Name, e.Ssn)).ToListAsync());
         }
 
         // GET: Airplanes/Details/5

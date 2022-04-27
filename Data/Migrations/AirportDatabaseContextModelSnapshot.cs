@@ -56,9 +56,9 @@ namespace Airport_Database.Migrations
                         .HasMaxLength(30)
                         .IsUnicode(false);
 
-                    b.Property<int?>("PhoneNo")
+                    b.Property<long?>("PhoneNo")
                         .HasColumnName("phone_no")
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
                     b.Property<decimal?>("Salary")
                         .HasColumnName("salary")
@@ -76,9 +76,9 @@ namespace Airport_Database.Migrations
                         .HasMaxLength(30)
                         .IsUnicode(false);
 
-                    b.Property<int?>("UnionMemNo")
+                    b.Property<long?>("UnionMemNo")
                         .HasColumnName("union_mem_no")
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("Zip")
                         .HasColumnName("zip")
@@ -142,17 +142,21 @@ namespace Airport_Database.Migrations
 
             modelBuilder.Entity("Airport_Database.Models.Test", b =>
                 {
-                    b.Property<DateTime?>("Date")
+                    b.Property<int>("TestNo")
+                        .HasColumnName("test_no")
+                        .HasColumnType("int");
+
+                    b.Property<long>("RegistrationNo")
+                        .HasColumnName("registration_no")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Date")
                         .HasColumnName("date")
                         .HasColumnType("date");
 
                     b.Property<int?>("NoHours")
                         .HasColumnName("no_hours")
                         .HasColumnType("int");
-
-                    b.Property<long?>("RegistrationNo")
-                        .HasColumnName("registration_no")
-                        .HasColumnType("bigint");
 
                     b.Property<decimal?>("Score")
                         .HasColumnName("score")
@@ -162,15 +166,12 @@ namespace Airport_Database.Migrations
                         .HasColumnName("ssn")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TestNo")
-                        .HasColumnName("test_no")
-                        .HasColumnType("int");
+                    b.HasKey("TestNo", "RegistrationNo", "Date")
+                        .HasName("PK__Test__CC0B8FC621A16600");
 
                     b.HasIndex("RegistrationNo");
 
                     b.HasIndex("Ssn");
-
-                    b.HasIndex("TestNo");
 
                     b.ToTable("Test");
                 });
@@ -248,19 +249,21 @@ namespace Airport_Database.Migrations
             modelBuilder.Entity("Airport_Database.Models.Test", b =>
                 {
                     b.HasOne("Airport_Database.Models.Airplane", "RegistrationNoNavigation")
-                        .WithMany()
+                        .WithMany("Test")
                         .HasForeignKey("RegistrationNo")
-                        .HasConstraintName("FK__Test__registrati__36B12243");
+                        .HasConstraintName("FK__Test__registrati__4CA06362")
+                        .IsRequired();
 
                     b.HasOne("Airport_Database.Models.Technician", "SsnNavigation")
-                        .WithMany()
+                        .WithMany("Test")
                         .HasForeignKey("Ssn")
                         .HasConstraintName("FK__Test__ssn__37A5467C");
 
                     b.HasOne("Airport_Database.Models.TestInfo", "TestNoNavigation")
-                        .WithMany()
+                        .WithMany("Test")
                         .HasForeignKey("TestNo")
-                        .HasConstraintName("FK__Test__test_no__35BCFE0A");
+                        .HasConstraintName("FK__Test__test_no__4D94879B")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Airport_Database.Models.TrafficController", b =>
