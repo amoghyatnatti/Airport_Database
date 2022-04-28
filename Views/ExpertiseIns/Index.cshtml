@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Airport_Database.Models.ExpertiseIn>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Model No
+            </th>
+            <th>
+                Assigned Technician
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModelNoNavigation.ModelNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SsnNavigation.Name)
+            </td>
+@*            <td>
+                <a asp-action="Edit" asp-route-id="@item.ModelNoNavigation.Ssn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Ssn">Delete</a>
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>
+<a  asp-area="" asp-controller="Technicians" asp-action="Index">Back to Technicians</a>

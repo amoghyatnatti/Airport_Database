@@ -4,23 +4,28 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Employee Details</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Add New Employee</a>
+    <a asp-action="Create">Create New</a>
 </p>
-
-<form asp-controller="Employees" asp-action="Index" method='get'>
+<a asp-area="" asp-controller="ExpertiseIns" asp-action="Index">View Expertised Model</a>
+<form asp-controller="Technicians" asp-action="Index" method='get'>
     <p>
-        Employee Name: <input type="text" name="searchString" />
+        Technician Name: <input type="text" name="searchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>
-<a  asp-area="" asp-controller="Technicians" asp-action="Index">View Technicians</a> |
-<a  asp-area="" asp-controller="TrafficControllers" asp-action="Index">View Traffic Controllers</a>
 <table class="table">
-    <thead>
+@*    <thead>
         <tr>
+            <th>
+               Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>*@
+            <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -47,10 +52,13 @@
             </th>
             <th></th>
         </tr>
-    </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>*@
+                 
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -76,11 +84,12 @@
                 @Html.DisplayFor(modelItem => item.City)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Ssn">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |
+@*                <a asp-action="Edit" asp-route-id="@item.Ssn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |*@
                 <a asp-action="Delete" asp-route-id="@item.Ssn">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<a asp-area="" asp-controller="Employees" asp-action="Index">Back to Employees</a>
