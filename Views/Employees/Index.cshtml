@@ -14,8 +14,11 @@
     <p>
         Employee Name: <input type="text" name="searchString" />
         <input type="submit" value="Filter" />
+        <span><button asp-controller="Employees">Reset</button></span>
     </p>
+
 </form>
+
 <a  asp-area="" asp-controller="Technicians" asp-action="Index">View Technicians</a> |
 <a  asp-area="" asp-controller="TrafficControllers" asp-action="Index">View Traffic Controllers</a>
 <table class="table">
