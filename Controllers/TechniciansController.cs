@@ -19,9 +19,15 @@ namespace Airport_Database.Controllers
         }
 
         // GET: Technicians
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var airportDatabaseContext = _context.Technician.Include(t => t.SsnNavigation);
+            var airportDatabaseContext = from e in _context.Employee
+                                         join t in _context.Technician on e.Ssn equals t.Ssn
+                                         select e;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                airportDatabaseContext = airportDatabaseContext.Where(s => s.Name!.Contains(searchString));
+            }
             return View(await airportDatabaseContext.ToListAsync());
         }
 

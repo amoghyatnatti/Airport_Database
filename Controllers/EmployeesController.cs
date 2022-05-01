@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Airport_Database.Data;
 using Airport_Database.Models;
+using System.Web;
+
 
 namespace Airport_Database.Controllers
 {
@@ -20,10 +22,35 @@ namespace Airport_Database.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Employee.ToListAsync());
+
+            //List<Employee> employees = _context.Employee.ToList();
+            //List<Technician> departments = _context.Technician.ToList();
+            //List<TrafficController> incentives = _context.TrafficController.ToList();
+
+            //var employeeRecord = from e in employees
+            //                     join d in departments on e.Department_Id equals d.DepartmentId into table1
+            //                     from d in table1.ToList()
+            //                     join i in incentives on e.Incentive_Id equals i.IncentiveId into table2
+            //                     from i in table2.ToList()
+            //                     select new ViewModel
+            //                     {
+            //                         employee = e,
+            //                         department = d,
+            //                         incentive = i
+            //                     };
+            //return View(employeeRecord);
+            var employees = from e in _context.Employee
+                            select e;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(s => s.Name!.Contains(searchString));
+            }
+
+            return View(await employees.ToListAsync());
         }
+
 
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -35,13 +62,22 @@ namespace Airport_Database.Controllers
 
             var employee = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Ssn == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
+            //if (employee == null)
+            //{
+            //    return NotFound();
+            //}
+            //var techie = from e in _context.Employee
+            //             join t in _context.Technician on e.Ssn equals t.Ssn
+            //             select new { techName = e.Name };
+
+
+                             //var controller = from e in _context.Employee
+                             //             join tc in _context.TrafficController on e.Ssn equals tc.Ssn
+                             //             select new { techName = e.Name };
 
             return View(employee);
         }
+
 
         // GET: Employees/Create
         public IActionResult Create()
@@ -63,6 +99,11 @@ namespace Airport_Database.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
+        }
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
         }
 
         // GET: Employees/Edit/5

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Airport_Database.Models.TrafficController>
+﻿@model IEnumerable<Airport_Database.Models.TrafficDetails>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,14 +9,36 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-controller="TrafficControllers" asp-action="Index" method='get'>
+    <p>
+        Traffic Controller Name: <input type="text" name="searchString" />
+        <input type="submit" value="Filter" />
+        <span><button asp-controller="TrafficControllers">Reset</button></span>
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MostRecentExamDate)
+                Most Recent Exam Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SsnNavigation)
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee.PhoneNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee.Zip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee.City)
             </th>
             <th></th>
         </tr>
@@ -25,17 +47,36 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MostRecentExamDate)
+                @Html.DisplayFor(modelItem => item.controller.MostRecentExamDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SsnNavigation.Name)
+                @Html.DisplayFor(modelItem => item.employee.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Ssn">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Ssn">Delete</a>
+                @Html.DisplayFor(modelItem => item.employee.PhoneNo)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.Zip)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.City)
+
+           <td>
+               @*  <a asp-action="Edit" asp-route-id="@item.Ssn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.controller.SsnNavigation">Delete</a>
+
+
+            </td>
+
         </tr>
 }
     </tbody>
 </table>
+<a asp-area="" asp-controller="Employees" asp-action="Index">Back to Employees</a>

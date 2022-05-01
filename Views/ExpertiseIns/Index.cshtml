@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ModelNoNavigation)
+                Model No
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SsnNavigation)
+                Assigned Technician
             </th>
             <th></th>
         </tr>
@@ -30,12 +30,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SsnNavigation.Name)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+@*            <td>
+                <a asp-action="Edit" asp-route-id="@item.ModelNoNavigation.Ssn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Ssn">Delete</a>
+            </td>*@
         </tr>
 }
     </tbody>
 </table>
+<a  asp-area="" asp-controller="Technicians" asp-action="Index">Back to Technicians</a>

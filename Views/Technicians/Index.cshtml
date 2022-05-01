@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Airport_Database.Models.Technician>
+﻿@model IEnumerable<Airport_Database.Models.Employee>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,27 +9,88 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<a asp-area="" asp-controller="ExpertiseIns" asp-action="Index">View Expertised Model</a>
+<form asp-controller="Technicians" asp-action="Index" method='get'>
+    <p>
+        Technician Name: <input type="text" name="searchString" />
+        <input type="submit" value="Filter" />
+        <span><button asp-controller="Technicians">Reset</button></span>
+    </p>
+</form>
 <table class="table">
-    <thead>
+@*    <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SsnNavigation)
+               Name
             </th>
             <th></th>
         </tr>
-    </thead>
+    </thead>*@
+            <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+@*            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>*@
+@*            <th>
+                @Html.DisplayNameFor(model => model.UnionMemNo)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th></th>
+        </tr>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>*@
+                 
             <td>
-                @Html.DisplayFor(modelItem => item.SsnNavigation.Name)
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>*@
+@*            <td>
+                @Html.DisplayFor(modelItem => item.UnionMemNo)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNo)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Ssn">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zip)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+@*                <a asp-action="Edit" asp-route-id="@item.Ssn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Ssn">Details</a> |*@
                 <a asp-action="Delete" asp-route-id="@item.Ssn">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<a asp-area="" asp-controller="Employees" asp-action="Index">Back to Employees</a>

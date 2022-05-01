@@ -19,10 +19,30 @@ namespace Airport_Database.Controllers
         }
 
         // GET: TrafficControllers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var airportDatabaseContext = _context.TrafficController.Include(t => t.SsnNavigation);
-            return View(await airportDatabaseContext.ToListAsync());
+            //var airportDatabaseContext = _context.TrafficController.Include(t => t.SsnNavigation);
+            //return View(await airportDatabaseContext.ToListAsync());
+            var airportDatabaseContext = from e in _context.Employee
+                                         join tc in _context.TrafficController on e.Ssn equals tc.Ssn
+                                         select e;
+     //       return View(await airportDatabaseContext.ToListAsync());
+            var employees = _context.Employee;
+            var controllers = _context.TrafficController;
+
+            var employeeRecord = from e in employees
+                                 join d in controllers on e.Ssn equals d.Ssn
+                                 select new TrafficDetails
+                                 {
+                                     employee = e,
+                                     controller = d,
+                                 };
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employeeRecord = employeeRecord.Where(s => s.employee.Name!.Contains(searchString));
+            }
+
+            return View(await employeeRecord.ToListAsync());
         }
 
         // GET: TrafficControllers/Details/5

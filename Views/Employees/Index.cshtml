@@ -4,23 +4,35 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Employee Details</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Add New Employee</a>
 </p>
+
+<form asp-controller="Employees" asp-action="Index" method='get'>
+    <p>
+        Employee Name: <input type="text" name="searchString" />
+        <input type="submit" value="Filter" />
+        <span><button asp-controller="Employees">Reset</button></span>
+    </p>
+
+</form>
+
+<a  asp-area="" asp-controller="Technicians" asp-action="Index">View Technicians</a> |
+<a  asp-area="" asp-controller="TrafficControllers" asp-action="Index">View Traffic Controllers</a>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+@*            <th>
                 @Html.DisplayNameFor(model => model.Salary)
-            </th>
-            <th>
+            </th>*@
+@*            <th>
                 @Html.DisplayNameFor(model => model.UnionMemNo)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNo)
             </th>
@@ -45,12 +57,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+@*            <td>
                 @Html.DisplayFor(modelItem => item.Salary)
-            </td>
-            <td>
+            </td>*@
+@*            <td>
                 @Html.DisplayFor(modelItem => item.UnionMemNo)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNo)
             </td>
