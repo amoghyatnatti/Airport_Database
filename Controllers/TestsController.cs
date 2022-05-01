@@ -55,6 +55,34 @@ namespace Airport_Database.Controllers
             return View();
         }
 
+        public IActionResult AddTest(long? RegistrationNo)
+        {
+            if(RegistrationNo == null)
+            {
+                return NotFound("RegistrationNo Null");
+            }
+            Airplane airplane = (Airplane)_context.Airplane.Where(a => a.RegistrationNo == RegistrationNo).First();
+            if(airplane == null)
+            {
+                return NotFound("Airplane " + RegistrationNo + " not found");
+            }
+            int? ModelNo = airplane.ModelNo;
+            if(ModelNo == null)
+            {
+                return NotFound();
+            }
+            //ViewData["RegistrationNo"] = new SelectList(_context.Airplane, "RegistrationNo", "RegistrationNo");
+            LinkedList<long?> reglist = new LinkedList<long?>();
+            reglist.AddFirst(RegistrationNo);
+            var techswithexp = _context.Technician.Join(_context.ExpertiseIn, t => t.Ssn, e => e.Ssn, (t, e) => new { t.Ssn, e.ModelNo }).Where(e => e.ModelNo == ModelNo);
+            var validtechnicians = techswithexp.Join(_context.Employee, t => t.Ssn, e => e.Ssn, (t, e) => new { e.Ssn, e.Name });
+            ViewData["RegistrationNo"] = new SelectList(reglist);
+            ViewData["Ssn"] = new SelectList(validtechnicians, "Ssn", "Name");
+            ViewData["TestNo"] = new SelectList(_context.TestInfo, "TestNo", "Name");
+            ViewData["errstring"] = new LinkedList<string>();
+            return View();
+        }
+
         // POST: Tests/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -72,6 +100,53 @@ namespace Airport_Database.Controllers
             ViewData["Ssn"] = new SelectList(_context.Technician, "Ssn", "Ssn", test.Ssn);
             ViewData["TestNo"] = new SelectList(_context.TestInfo, "TestNo", "TestNo", test.TestNo);
             return View(test);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTest([Bind("TestNo,RegistrationNo,Ssn,Date,NoHours,Score")] Test test)
+        {
+            string errstring = "";
+            if (ModelState.IsValid)
+            {
+                if (_context.Test.Where(t => t.RegistrationNo == test.RegistrationNo && t.Date == test.Date && t.TestNo == test.TestNo).ToList().Count > 0)
+                {
+                    errstring = "A test of the same type already exists on that date";
+                }
+                else if (_context.TestInfo.Where(t => t.TestNo == test.TestNo).First().MaxScore < test.Score)
+                {
+                    errstring = "Score cannot be greater than the max score for a test";
+                }
+                else
+                {
+                    _context.Add(test);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(AirplaneData), "Airplanes");
+                }
+            }
+
+            Airplane airplane = (Airplane)_context.Airplane.Where(a => a.RegistrationNo == test.RegistrationNo).First();
+            if (airplane == null)
+            {
+                return NotFound("Airplane " + test.RegistrationNo + " not found");
+            }
+            int? ModelNo = airplane.ModelNo;
+            if (ModelNo == null)
+            {
+                return NotFound();
+            }
+            //ViewData["RegistrationNo"] = new SelectList(_context.Airplane, "RegistrationNo", "RegistrationNo");
+            LinkedList<long?> reglist = new LinkedList<long?>();
+            LinkedList<string> errlist = new LinkedList<string>();
+            reglist.AddFirst(test.RegistrationNo);
+            errlist.AddFirst(errstring);
+            var techswithexp = _context.Technician.Join(_context.ExpertiseIn, t => t.Ssn, e => e.Ssn, (t, e) => new { t.Ssn, e.ModelNo }).Where(e => e.ModelNo == ModelNo);
+            var validtechnicians = techswithexp.Join(_context.Employee, t => t.Ssn, e => e.Ssn, (t, e) => new { e.Ssn, e.Name });
+            ViewData["RegistrationNo"] = new SelectList(reglist);
+            ViewData["Ssn"] = new SelectList(validtechnicians, "Ssn", "Name");
+            ViewData["TestNo"] = new SelectList(_context.TestInfo, "TestNo", "Name");
+            ViewData["errstring"] = errlist;
+            return View();
         }
 
         // GET: Tests/Edit/5

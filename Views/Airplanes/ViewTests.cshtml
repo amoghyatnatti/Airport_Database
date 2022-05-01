@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Airport_Database.Models.AirplaneTest>
+
+<div>
+    <h4>Airplane</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Test Name
+        </dt>
+        <dt class = "col-sm-2">
+            Technician
+        </dt>
+        <dt class = "col-sm-2">
+            Score
+        </dt>
+        <dt class = "col-sm-2">
+            Date
+        </dt>
+    </dl>
+@foreach(var item in Model) {
+    <dl class="row">
+        <dd class = "col-sm-2">
+            @Html.DisplayFor(modelItem => item.TestName)
+        </dd>
+        <dd class = "col-sm-2">
+            @Html.DisplayFor(modelItem => item.TechnicianName)
+        </dd>
+        <dd class = "col-sm-2">
+            @Html.DisplayFor(modelItem => item.Score) / @Html.DisplayFor(modelItem => item.MaxScore)
+        </dd>
+        <dd class = "col-sm-2">
+            @Html.DisplayFor(modelItem => item.Date)
+        </dd>
+    </dl>
+}
+</div>
+<div>
+    <a asp-action="AirplaneData">Back to List</a>
+</div>

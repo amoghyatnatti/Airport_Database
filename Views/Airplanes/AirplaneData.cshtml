@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Airport_Database.Models.AirplaneData>
+
+<h4>Airplane</h4>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Airplanes
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>
+                Registration Number
+            </th>
+            <th>
+                Model Number
+            </th>
+            <th>
+                Capacity
+            </th>
+            <th>
+                Weight
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModelNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                <a asp-action="ViewTests" asp-route-id="@item.RegistrationNo">View Tests</a> |
+                <a asp-action="AddTest" asp-controller="Tests" asp-route-RegistrationNo="@item.RegistrationNo">Add Test</a> |
+                <a asp-action="Delete" asp-route-id="@item.RegistrationNo">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="AirplaneData">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

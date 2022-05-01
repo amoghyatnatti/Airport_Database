@@ -1,0 +1,53 @@
+﻿@model Airport_Database.Models.Test
+
+<h4>Test</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @foreach (string str in ViewData["errstring"] as LinkedList<string>)
+        {
+            <p style="color:#ff0000">@str</p>
+        }
+        <form asp-action="AddTest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TestNo" class="control-label">Test Name</label>
+                <select asp-for="TestNo" class ="form-control" asp-items="ViewBag.TestNo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationNo" class="control-label"></label>
+                <select asp-for="RegistrationNo" class ="form-control" asp-items="ViewBag.RegistrationNo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ssn" class="control-label">Technician</label>
+                <select asp-for="Ssn" class ="form-control" asp-items="ViewBag.Ssn"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoHours" class="control-label"></label>
+                <input asp-for="NoHours" class="form-control" />
+                <span asp-validation-for="NoHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="AddTest" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Airplane" asp-action="AirplaneData">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
