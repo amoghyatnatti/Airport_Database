@@ -9,29 +9,22 @@ using Airport_Database.Models;
 
 namespace Airport_Database.Controllers
 {
-    public class TechniciansController : Controller
+    public class TestInfoesController : Controller
     {
         private readonly AirportDatabaseContext _context;
 
-        public TechniciansController(AirportDatabaseContext context)
+        public TestInfoesController(AirportDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Technicians
-        public async Task<IActionResult> Index(string searchString)
+        // GET: TestInfoes
+        public async Task<IActionResult> Index()
         {
-            var airportDatabaseContext = from e in _context.Employee
-                                         join t in _context.Technician on e.Ssn equals t.Ssn
-                                         select e;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                airportDatabaseContext = airportDatabaseContext.Where(s => s.Name!.Contains(searchString));
-            }
-            return View(await airportDatabaseContext.ToListAsync());
+            return View(await _context.TestInfo.ToListAsync());
         }
 
-        // GET: Technicians/Details/5
+        // GET: TestInfoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,42 +32,39 @@ namespace Airport_Database.Controllers
                 return NotFound();
             }
 
-            var technician = await _context.Technician
-                .Include(t => t.SsnNavigation)
-                .FirstOrDefaultAsync(m => m.Ssn == id);
-            if (technician == null)
+            var testInfo = await _context.TestInfo
+                .FirstOrDefaultAsync(m => m.TestNo == id);
+            if (testInfo == null)
             {
                 return NotFound();
             }
 
-            return View(technician);
+            return View(testInfo);
         }
 
-        // GET: Technicians/Create
+        // GET: TestInfoes/Create
         public IActionResult Create()
         {
-            ViewData["Ssn"] = new SelectList(_context.Employee, "Ssn", "Name");
             return View();
         }
 
-        // POST: Technicians/Create
+        // POST: TestInfoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Ssn")] Technician technician)
+        public async Task<IActionResult> Create([Bind("TestNo,Name,MaxScore")] TestInfo testInfo)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(technician);
+                _context.Add(testInfo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Ssn"] = new SelectList(_context.Employee, "Ssn", "Name", technician.Ssn);
-            return View(technician);
+            return View(testInfo);
         }
 
-        // GET: Technicians/Edit/5
+        // GET: TestInfoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,23 +72,22 @@ namespace Airport_Database.Controllers
                 return NotFound();
             }
 
-            var technician = await _context.Technician.FindAsync(id);
-            if (technician == null)
+            var testInfo = await _context.TestInfo.FindAsync(id);
+            if (testInfo == null)
             {
                 return NotFound();
             }
-            ViewData["Ssn"] = new SelectList(_context.Employee, "Ssn", "Name", technician.Ssn);
-            return View(technician);
+            return View(testInfo);
         }
 
-        // POST: Technicians/Edit/5
+        // POST: TestInfoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Ssn")] Technician technician)
+        public async Task<IActionResult> Edit(int id, [Bind("TestNo,Name,MaxScore")] TestInfo testInfo)
         {
-            if (id != technician.Ssn)
+            if (id != testInfo.TestNo)
             {
                 return NotFound();
             }
@@ -107,12 +96,12 @@ namespace Airport_Database.Controllers
             {
                 try
                 {
-                    _context.Update(technician);
+                    _context.Update(testInfo);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TechnicianExists(technician.Ssn))
+                    if (!TestInfoExists(testInfo.TestNo))
                     {
                         return NotFound();
                     }
@@ -123,11 +112,10 @@ namespace Airport_Database.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Ssn"] = new SelectList(_context.Employee, "Ssn", "Name", technician.Ssn);
-            return View(technician);
+            return View(testInfo);
         }
 
-        // GET: Technicians/Delete/5
+        // GET: TestInfoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,31 +123,30 @@ namespace Airport_Database.Controllers
                 return NotFound();
             }
 
-            var technician = await _context.Technician
-                .Include(t => t.SsnNavigation)
-                .FirstOrDefaultAsync(m => m.Ssn == id);
-            if (technician == null)
+            var testInfo = await _context.TestInfo
+                .FirstOrDefaultAsync(m => m.TestNo == id);
+            if (testInfo == null)
             {
                 return NotFound();
             }
 
-            return View(technician);
+            return View(testInfo);
         }
 
-        // POST: Technicians/Delete/5
+        // POST: TestInfoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var technician = await _context.Technician.FindAsync(id);
-            _context.Technician.Remove(technician);
+            var testInfo = await _context.TestInfo.FindAsync(id);
+            _context.TestInfo.Remove(testInfo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TechnicianExists(int id)
+        private bool TestInfoExists(int id)
         {
-            return _context.Technician.Any(e => e.Ssn == id);
+            return _context.TestInfo.Any(e => e.TestNo == id);
         }
     }
 }
