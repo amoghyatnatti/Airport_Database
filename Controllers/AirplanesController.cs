@@ -82,7 +82,7 @@ namespace Airport_Database.Controllers
             {
                 _context.Add(airplane);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AirplaneData));
             }
             ViewData["ModelNo"] = new SelectList(_context.Model, "ModelNo", "ModelNo", airplane.ModelNo);
             return View(airplane);
@@ -135,7 +135,7 @@ namespace Airport_Database.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AirplaneData));
             }
             ViewData["ModelNo"] = new SelectList(_context.Model, "ModelNo", "ModelNo", airplane.ModelNo);
             return View(airplane);
@@ -168,7 +168,7 @@ namespace Airport_Database.Controllers
             var airplane = await _context.Airplane.FindAsync(id);
             _context.Airplane.Remove(airplane);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AirplaneData));
         }
 
         private bool AirplaneExists(long id)
